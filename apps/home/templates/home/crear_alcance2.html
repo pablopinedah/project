@@ -1,0 +1,15 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <h1>Datos Alcance 2</h1>
+
+    <p>El alcance 2 incluye las emisiones en la generación de electricidad adquirida y consumida por la empresa. Electricidad adquirida se define como la electricidad que es comprada, o traída dentro del límite organizacional de la empresa. Las emisiones del alcance 2 ocurren físicamente en la planta donde la electricidad es generada.</p>    
+
+
+    <form action="" method="post" >
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Datos Alcance 2">
+    </form>
+
+{% endblock content %}

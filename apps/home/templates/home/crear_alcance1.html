@@ -1,0 +1,14 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    <h1>Datos Alcance 1</h1>
+
+    <p>Las emisiones de Alcance 1 ocurren de fuentes que son propiedad de la empresa o están controladas por esta. Las emisiones provenientes de la combustión en calderas, hornos, vehículos propios, etc., que son propiedad o están controlados por la empresa; emisiones provenientes de la producción química en equipos de proceso propios o controlados.</p>    
+
+    <form action="" method="post" >
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Datos Alcance 1">
+    </form>
+
+{% endblock content %}
