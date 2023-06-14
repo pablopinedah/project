@@ -50,7 +50,7 @@ def about(request):
 def calculo_emision_refrigerante(request):
     factor_emision = models.Factor_emision_gas_refrigerante.objects.all()
     context = {"factor_emision": factor_emision}
-    return render(request, "home/calculo_emision_refrigerante.html", context)
+    return render(request, "home/calculo-emision-refrigerante.html", context)
     
     #valor_refrigerante = float(request.POST.get())
     
