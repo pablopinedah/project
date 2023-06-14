@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from . import forms 
+from . import forms
+from . import models 
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
+
 
 # Create your views here.
 def index(request):
@@ -44,4 +46,11 @@ def about(request):
     return render(request, 'home/about.html')    
 
 
-
+#Vamos a mostrar los resultado del cálculo de la huella de carbono:
+def calculo_emision_refrigerante(request):
+    factor_emision = models.Factor_emision_gas_refrigerante.objects.all()
+    context = {"factor_emision": factor_emision}
+    return render(request, "home/calculo_emision_refrigerante.html", context)
+    
+    #valor_refrigerante = float(request.POST.get())
+    

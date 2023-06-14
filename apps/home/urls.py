@@ -10,5 +10,6 @@ urlpatterns = [
     path('crear-alcance1/', views.crear_alcance1, name="crear-alcance1"),
     path('crear-alcance2/', views.crear_alcance2, name="crear-alcance2"),
     path('about/', views.about, name="about"),
+    path('calculo-emision-refrigerante/', views.calculo_emision_refrigerante, name="calculo-emision-refrigerante"),
 ]
 urlpatterns += staticfiles_urlpatterns()
