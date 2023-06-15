@@ -1,6 +1,18 @@
 {% extends 'home/base.html' %}
 
-{% block content %}  
+{% block content %}
+   
+    {% if user.is_authenticated %}
+        <br><p>{{mensaje}}</p>
+    {% endif %} 
+
+    {% if user.is_staff %}
+        <p><a href="{% url 'admin:index' %}">Administración</a></p>
+        <p><a href="{% url 'admin:index' %}">Registro nueva empresa</a></p>
+
+
+    {% endif %} 
+
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://cdn.pixabay.com/photo/2014/04/17/23/26/environmental-protection-326923_1280.jpg" alt="..." /></div>
         <div class="col-lg-5">

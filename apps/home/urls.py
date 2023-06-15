@@ -12,5 +12,6 @@ urlpatterns = [
     path('about/', views.about, name="about"),
     path('calculo-emision-refrigerante/', views.calculo_emision_refrigerante, name="calculo-emision-refrigerante"),
     path('login/', views.login_request, name="login"),
+    path("register/", views.register, name="register"),
 ]
 urlpatterns += staticfiles_urlpatterns()

@@ -3,7 +3,7 @@ from . import forms
 from . import models 
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
 
 
@@ -60,7 +60,7 @@ def calculo_emision_refrigerante(request):
 # Creamos la función para el login
 def login_request(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
+        form = AuthenticationForm(request.POST, data=request.POST)
         if form.is_valid():
             usuario = form.cleaned_data.get("username")
             contraseña = form.cleaned_data.get('password')
@@ -71,5 +71,16 @@ def login_request(request):
     else:
         form = AuthenticationForm()
     return render(request, "home/login.html", {"form": form})
+
+#El registro de una nueva empresa
+def register(request):
+    if request.method == "POST":
+        form = forms.UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "home/index.html", {"messages": "Empresa creada"})
+    else:
+        form = UserCreationForm()
+    return render(request, "home/register.html", {"form": form})
 
 
