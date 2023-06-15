@@ -11,5 +11,6 @@ urlpatterns = [
     path('crear-alcance2/', views.crear_alcance2, name="crear-alcance2"),
     path('about/', views.about, name="about"),
     path('calculo-emision-refrigerante/', views.calculo_emision_refrigerante, name="calculo-emision-refrigerante"),
+    path('login/', views.login_request, name="login"),
 ]
 urlpatterns += staticfiles_urlpatterns()
