@@ -8,9 +8,7 @@
 
     {% if user.is_staff %}
         <p><a href="{% url 'admin:index' %}">Administración</a></p>
-        <p><a href="{% url 'admin:index' %}">Registro nueva empresa</a></p>
-
-
+        <p><a href="{% url 'home:register' %}">Registro nueva empresa</a></p>
     {% endif %} 
 
     <div class="row gx-4 gx-lg-5 align-items-center my-5">

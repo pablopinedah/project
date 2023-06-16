@@ -75,12 +75,12 @@ def login_request(request):
 #El registro de una nueva empresa
 def register(request):
     if request.method == "POST":
-        form = forms.UserCreationForm(request.POST)
+        form = forms.CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return render(request, "home/index.html", {"messages": "Empresa creada"})
     else:
-        form = UserCreationForm()
+        form = forms.CustomUserCreationForm()
     return render(request, "home/register.html", {"form": form})
 
 
