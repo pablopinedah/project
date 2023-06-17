@@ -17,26 +17,26 @@ class Cliente(models.Model):
  #Se crea la clase Alcance1 para solicitar los datos de emisiones directas por Equipos de Aire Acondicionado:
 class Alcance1(models.Model):
     refrigerante = models.CharField(max_length=20)
-    cantidad_refrigerante = models.FloatField()
+    cantidad_refrigerante_kg = models.FloatField()
     
     def __str__(self):
         return self.refrigerante  
     
 #Se crea la clase Alcance2 para solitar los datos de emisiones directas por el consumo de electricidad
 class Alcance2(models.Model):
-    consumo_energia_electrica = models.FloatField()
+    consumo_energia_electrica_kwh = models.FloatField()
     mes = models.CharField(max_length=20)
     
     def __str__(self):
-        return str(self.consumo_energia_electrica)  
+        return str(self.consumo_energia_electrica_kwh)  
     
 #! CONSTANTES, FACTORES DE EMISIÓN (CANTIDAD/CO2):
 #Se crea un modelo para los factores de emisión, son constante que cambia anualmente, esto se hace por el panel de administración
 
 class Factor_emision_gas_refrigerante(models.Model):
     
-    TIPO_REFRIGERANTE = models.CharField(max_length=20)
-    GWP = models.DecimalField(max_digits=6, decimal_places=2) #ejemplo R-410A tiene un GWP=1924.00
+    TIPO_REFRIGERANTE = models.CharField(max_length=20) #el TIPO_REFRIGERANTE puede ser: R-410A, entre otros
+    GWP = models.DecimalField(max_digits=6, decimal_places=2) #ejemplo R-410A tiene un GWP=1924.00, es el valor numérico
     
     class Meta:
         # db_table = ''

@@ -47,17 +47,8 @@ def crear_alcance2(request):
 
 def about(request):
     return render(request, 'home/about.html')    
-
-
-#Vamos a mostrar los resultado del cálculo de la huella de carbono:
-def calculo_emision_refrigerante(request):
-    factor_emision = models.Factor_emision_gas_refrigerante.objects.all()
-    context = {"factor_emision": factor_emision}
-    return render(request, "home/calculo_emision_refrigerante.html", context)
-    
-    #valor_refrigerante = float(request.POST.get())
-    
-# Creamos la función para el login
+   
+#! Creamos la función para el login
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request.POST, data=request.POST)
@@ -72,7 +63,7 @@ def login_request(request):
         form = AuthenticationForm()
     return render(request, "home/login.html", {"form": form})
 
-#El registro de una nueva empresa
+#! El registro de una nueva empresa:
 def register(request):
     if request.method == "POST":
         form = forms.CustomUserCreationForm(request.POST)
@@ -83,4 +74,18 @@ def register(request):
         form = forms.CustomUserCreationForm()
     return render(request, "home/register.html", {"form": form})
 
+
+#!  Cálculo emisiones alcance1:
+
+def calculo_emision_refrigerante(request):
+    if request.method == 'POST':
+        refrigerante = request.POST.get('refrigerante')
+        cantidad_refrigerante_kg = request.POST.get('cantidad_refrigerante_kg')
+        factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
+        gwp = factor.GWP
+        emision_refrigerante = cantidad_refrigerante_kg * gwp
+        
+        return render(request, "home/calculo_emision_refrigerante.html", {'emision_refrigerante': emision_refrigerante})
+    else:
+        return render(request, "home/crear_alcance1.html")    
 

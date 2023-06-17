@@ -141,5 +141,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Necesario para el login
 
 
-LOGIN_URL = "home:index"
+LOGIN_URL = "home:login"
 #LOGIN_REDIRECT_URL = reverse_lazy("home:index")
