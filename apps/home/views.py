@@ -34,6 +34,22 @@ def crear_alcance1(request):
             context = {"form": form}
     return render(request, "home/crear_alcance1.html",context)
 
+#!  Cálculo emisiones alcance1:
+def calculo_emision_refrigerante(request):
+    if request.method == 'POST':
+        refrigerante = request.POST.get('refrigerante')
+        cantidad_refrigerante_kg = request.POST.get('cantidad_refrigerante_kg')
+        factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
+        gwp = factor.GWP
+        emision_refrigerante = cantidad_refrigerante_kg * gwp
+        
+        return render(request, "home/calculo_emision_refrigerante.html", {'emision_refrigerante': emision_refrigerante})
+    else:
+        return render(request, "home/crear_alcance1.html") 
+
+
+
+
 def crear_alcance2(request):
     if request.method == "POST":
         form = forms.Alcance2Form(request.POST)
@@ -45,9 +61,14 @@ def crear_alcance2(request):
             context = {"form": form}
     return render(request, "home/crear_alcance2.html",context)
 
+
+
+
+
+#! Creamos la función about
 def about(request):
     return render(request, 'home/about.html')    
-   
+
 #! Creamos la función para el login
 def login_request(request):
     if request.method == 'POST':
@@ -74,18 +95,5 @@ def register(request):
         form = forms.CustomUserCreationForm()
     return render(request, "home/register.html", {"form": form})
 
-
-#!  Cálculo emisiones alcance1:
-
-def calculo_emision_refrigerante(request):
-    if request.method == 'POST':
-        refrigerante = request.POST.get('refrigerante')
-        cantidad_refrigerante_kg = request.POST.get('cantidad_refrigerante_kg')
-        factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
-        gwp = factor.GWP
-        emision_refrigerante = cantidad_refrigerante_kg * gwp
-        
-        return render(request, "home/calculo_emision_refrigerante.html", {'emision_refrigerante': emision_refrigerante})
-    else:
-        return render(request, "home/crear_alcance1.html")    
+   
 
