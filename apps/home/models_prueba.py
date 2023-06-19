@@ -33,16 +33,16 @@ class Alcance2(models.Model):
 #! CONSTANTES, FACTORES DE EMISIÓN (CANTIDAD/CO2):
 #Se crea un modelo para los factores de emisión, son constante que cambia anualmente, esto se hace por el panel de administración
 
-class Factor_emision_gas_refrigerante(models.Model):
+#class Factor_emision_gas_refrigerante(models.Model):
     
-    TIPO_REFRIGERANTE = models.CharField(max_length=20) #el TIPO_REFRIGERANTE puede ser: R410A, entre otros
-    GWP = models.DecimalField(max_digits=6, decimal_places=2) #ejemplo R410A tiene un GWP=1924.00, es el valor numérico
+#   TIPO_REFRIGERANTE = models.CharField(max_length=20) #el TIPO_REFRIGERANTE puede ser: R-410A, entre otros
+#   GWP = models.DecimalField(max_digits=6, decimal_places=2) #ejemplo R-410A tiene un GWP=1924.00, es el valor numérico
     
-    class Meta:
-        verbose_name = 'Tipo de Refrigerante (AR5)'
-        verbose_name_plural = 'Tipos de Refrigerantes (AR5)'
-    def __str__(self):
-        return self.TIPO_REFRIGERANTE
+#    class Meta:
+#        verbose_name = 'Tipo de Refrigerante (AR5)'
+#        verbose_name_plural = 'Tipos de Refrigerantes (AR5)'
+#    def __str__(self):
+#        return self.TIPO_REFRIGERANTE
 
 
 class Factor_emision_consumo_energiaelectrica(models.Model):    
@@ -59,3 +59,32 @@ class Factor_emision_consumo_energiaelectrica(models.Model):
     
     def __str__(self):
         return self.PAIS   
+
+
+#! Clase Refrigerante:
+#Se crear la Clases Refrigerante. Se utiliza para almacenar el tipo de refrigerante seleccionado:
+class Refrigerante(models.Model):
+    OPCIONES_REFRIGERANTE = (
+        ('R22', 'Refrigerante 1'),
+        ('R410A', 'Refrigerante 2'),
+        ('R407C', 'Refrigerante 3'),
+    )
+
+    refrigerante = models.CharField(max_length=5, choices=OPCIONES_REFRIGERANTE)
+    gwp = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Tipo de Refrigerante (AR5)'
+        verbose_name_plural = 'Tipos de Refrigerantes (AR5)'
+    def __str__(self):
+        return self.refrigerante
+    
+    def save(self, *args, **kwargs):  # Establece el valor del campo GWP en función del refrigerante seleccionado:
+        if self.refrigerante == 'R22':
+            self.gwp = 1700
+        elif self.refrigerante == 'R410A':
+            self.gwp = 1924
+        elif self.refrigerante == 'R407C':
+            self.gwp = 1624
+        
+        super().save(*args, **kwargs)
