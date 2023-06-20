@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib import admin
+from decimal import Decimal
 
 
 # Se crea un modelo para poder guardas datos en el formulario.
@@ -64,14 +65,13 @@ class Factor_emision_consumo_energiaelectrica(models.Model):
 
 class ResultadoEmisionGasRefrigerante(models.Model):
     
-    ResultadoEmisionGasRefrigerante = models.DecimalField(max_digits=6, decimal_places=2)
+    ResultadoEmisionGasRefrigerante = models.DecimalField(max_digits=6, decimal_places=2, name='valor')
     
     class Meta:
         verbose_name = 'Emisión de Gas Refrigerante (KgCO2)'
         verbose_name_plural = 'Emisioes de Gases Refrigerantes (KgCO2)'
     def __str__(self):
         return self.ResultadoEmisionGasRefrigerante 
-    
 
 class ResultadoEmisionConsumoEnergiaelectrica(models.Model):
     

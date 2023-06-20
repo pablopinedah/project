@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
+from decimal import Decimal
 
 
 
@@ -28,6 +29,7 @@ def crear_alcance1(request):
         form = forms.Alcance1Form (request.POST)
         if form.is_valid():
             form.save()
+            calculo_emision_refrigerante(request) #Prueba
             return redirect("home:index")
     else:
             form = forms.Alcance1Form()
@@ -38,21 +40,23 @@ def crear_alcance1(request):
 def calculo_emision_refrigerante(request):
     if request.method == 'POST':
         refrigerante = request.POST.get('refrigerante')
-        cantidad_refrigerante_kg = request.POST.get('cantidad_refrigerante_kg')
+        cantidad_refrigerante_kg = Decimal(request.POST.get('cantidad_refrigerante_kg'))
         factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
-        gwp = factor.GWP
-        ResultadoEmisionGasRefrigerante = cantidad_refrigerante_kg * gwp
+        gwp = Decimal(factor.GWP)
+        resultado_emision_gas_refrigerante = cantidad_refrigerante_kg * gwp
+        
+        try:
+            resultado.save()
+        except Exception  as e:
+            print(e)
         
         # Guardar el resultado en la base de datos (modelo)
-        ResultadoEmisionGasRefrigerante = models.ResultadoEmisionGasRefrigerante(valor=ResultadoEmisionGasRefrigerante)
-        ResultadoEmisionGasRefrigerante.save()
+        resultado = models.ResultadoEmisionGasRefrigerante(valor=resultado_emision_gas_refrigerante)
+        resultado.save()
         
-        return render(request, "home/calculo_emision_refrigerante.html", {'ResultadoEmisionGasRefrigerante': ResultadoEmisionGasRefrigerante})
+        return render(request, "home/calculo_emision_refrigerante.html", {'ResultadoEmisionGasRefrigerante': resultado})
     else:
-        return render(request, "home/crear_alcance1.html") 
-
-
-
+        return render(request, "home/crear_alcance1.html")
 
 def crear_alcance2(request):
     if request.method == "POST":
