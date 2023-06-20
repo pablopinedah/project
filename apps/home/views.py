@@ -41,9 +41,13 @@ def calculo_emision_refrigerante(request):
         cantidad_refrigerante_kg = request.POST.get('cantidad_refrigerante_kg')
         factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
         gwp = factor.GWP
-        emision_refrigerante = cantidad_refrigerante_kg * gwp
+        ResultadoEmisionGasRefrigerante = cantidad_refrigerante_kg * gwp
         
-        return render(request, "home/calculo_emision_refrigerante.html", {'emision_refrigerante': emision_refrigerante})
+        # Guardar el resultado en la base de datos (modelo)
+        ResultadoEmisionGasRefrigerante = models.ResultadoEmisionGasRefrigerante(valor=ResultadoEmisionGasRefrigerante)
+        ResultadoEmisionGasRefrigerante.save()
+        
+        return render(request, "home/calculo_emision_refrigerante.html", {'ResultadoEmisionGasRefrigerante': ResultadoEmisionGasRefrigerante})
     else:
         return render(request, "home/crear_alcance1.html") 
 
