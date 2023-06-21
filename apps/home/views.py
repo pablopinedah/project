@@ -24,39 +24,17 @@ def crear_cliente(request):
             context = {"form": form}
     return render(request, "home/crear_cliente.html",context)
     
-def crear_alcance1(request):
-    if request.method == "POST":
-        form = forms.Alcance1Form (request.POST)
-        if form.is_valid():
-            form.save()
-            calculo_emision_refrigerante(request) #Prueba
-            return redirect("home:index")
-    else:
-            form = forms.Alcance1Form()
-            context = {"form": form}
-    return render(request, "home/crear_alcance1.html",context)
-
-#!  Cálculo emisiones alcance1:
-def calculo_emision_refrigerante(request):
-    if request.method == 'POST':
-        refrigerante = request.POST.get('refrigerante')
-        cantidad_refrigerante_kg = Decimal(request.POST.get('cantidad_refrigerante_kg'))
-        factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
-        gwp = Decimal(factor.GWP)
-        resultado_emision_gas_refrigerante = cantidad_refrigerante_kg * gwp
-        
-        try:
-            resultado.save()
-        except Exception  as e:
-            print(e)
-        
-        # Guardar el resultado en la base de datos (modelo)
-        resultado = models.ResultadoEmisionGasRefrigerante(valor=resultado_emision_gas_refrigerante)
-        resultado.save()
-        
-        return render(request, "home/calculo_emision_refrigerante.html", {'ResultadoEmisionGasRefrigerante': resultado})
-    else:
-        return render(request, "home/crear_alcance1.html")
+#def crear_alcance1(request):
+#    if request.method == "POST":
+#        form = forms.Alcance1Form (request.POST)
+#        if form.is_valid():
+#            form.save()
+#            calculo_emision_refrigerante(request) #Prueba
+#            return redirect("home:index")
+#    else:
+#            form = forms.Alcance1Form()
+#            context = {"form": form}
+#    return render(request, "home/crear_alcance1.html",context)
 
 def crear_alcance2(request):
     if request.method == "POST":
@@ -69,9 +47,62 @@ def crear_alcance2(request):
             context = {"form": form}
     return render(request, "home/crear_alcance2.html",context)
 
+"""
+#!  Cálculo emisiones alcance1, codigo inicial:
+def calculo_emision_refrigerante(request):
+    if request.method == 'POST':
+        refrigerante = request.POST.get('refrigerante')
+        cantidad_refrigerante_kg = Decimal(request.POST.get('cantidad_refrigerante_kg'))
+        factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
+        gwp = Decimal(factor.GWP)
+        resultado_emision_gas_refrigerante = cantidad_refrigerante_kg * gwp
+            
+        # Guardar el resultado en la base de datos (modelo)
+        resultado = models.ResultadoEmisionGasRefrigerante(valor=resultado_emision_gas_refrigerante)
+        resultado.save()
+        
+        return render(request, "home/calculo_emision_refrigerante.html", {'ResultadoEmisionGasRefrigerante': resultado})
+    else:
+        return render(request, "home/crear_alcance1.html")
+"""
 
 
 
+
+
+#!Prueba_1: con nuevo código:
+def crear_alcance1(request):
+    if request.method == "POST":
+        form = forms.Alcance1Form(request.POST)
+        if form.is_valid():
+            alcance1 = form.save()
+            calculo_emision_refrigerante(request, alcance1)
+            return redirect('home:mostrar_resultados')
+    else:
+        form = forms.Alcance1Form()
+    
+    context = {"form": form}
+    return render(request, "home/crear_alcance1.html", context)
+
+#!  Prueba_1: Cálculo emisiones alcance1:
+def calculo_emision_refrigerante(request, alcance1):
+    refrigerante = alcance1.refrigerante
+    cantidad_refrigerante_kg = alcance1.cantidad_refrigerante_kg
+    
+    factor = models.Factor_emision_gas_refrigerante.objects.get(TIPO_REFRIGERANTE=refrigerante)
+    gwp = factor.GWP
+    resultado_emision_gas_refrigerante = float(cantidad_refrigerante_kg) * float(gwp)
+
+    resultado = models.ResultadoEmisionGasRefrigerante(valor=resultado_emision_gas_refrigerante)
+    resultado.save()
+
+#!  Prueba_1:
+def mostrar_resultados(request):
+    factor_emision = models.ResultadoEmisionGasRefrigerante.objects.all()
+    return render(request, 'home/calculo_emision_refrigerante.html', {'factor_emision': factor_emision})
+
+
+###################**********************
 
 #! Creamos la función about
 def about(request):
@@ -102,6 +133,3 @@ def register(request):
     else:
         form = forms.CustomUserCreationForm()
     return render(request, "home/register.html", {"form": form})
-
-   
-

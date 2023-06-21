@@ -9,11 +9,17 @@ urlpatterns = [
     path("", views.index, name="index"),
     path('crear-cliente/', views.crear_cliente, name="crear-cliente"),
     path('crear-alcance1/', views.crear_alcance1, name="crear-alcance1"),
-    path('crear-alcance2/', views.crear_alcance2, name="crear-alcance2"),
+    path('crear-alcance2/', views.crear_alcance2, name="crear-alcance2"),  
     path('about/', views.about, name="about"),
     path('calculo-emision-refrigerante/', views.calculo_emision_refrigerante, name="calculo-emision-refrigerante"),
+    path('mostrar-resultados/', views.mostrar_resultados, name='mostrar_resultados'),
     path('login/', views.login_request, name="login"),
     path("register/", views.register, name="register"),
     path("logout/", LogoutView.as_view(template_name="home/logout.html"), name="logout"),
 ]
 urlpatterns += staticfiles_urlpatterns()
+
+
+    
+    
+    
