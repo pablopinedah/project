@@ -1,0 +1,17 @@
+{% extends 'home/crear_alcance2.html' %}
+
+{% block content_alcance2 %}
+    <h4>Resultado emisión (kgCO2)</h4>
+    
+    {% for factor in factor_emision %}
+       <ul>
+            <li>{{ factor.valor }}</li> 
+        </ul>
+    {% endfor %}     
+           
+    
+
+{% endblock content_alcance2 %}
+
+
+

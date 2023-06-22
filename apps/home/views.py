@@ -12,6 +12,7 @@ from decimal import Decimal
 def index(request):
     return render(request, 'home/index.html')
 
+#! Se crea la función crear_cliente para ingresar por el usuario los datos de la empresa.
 def crear_cliente(request):
     if request.method == "POST":
         form = forms.ClienteForm(request.POST)
@@ -22,23 +23,8 @@ def crear_cliente(request):
             form = forms.ClienteForm()
             context = {"form": form}
     return render(request, "home/crear_cliente.html",context)
-    
 
-def crear_alcance2(request):
-    if request.method == "POST":
-        form = forms.Alcance2Form(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("home:index")
-    else:
-            form = forms.Alcance2Form()
-            context = {"form": form}
-    return render(request, "home/crear_alcance2.html",context)
-
-
-
-#***********************************************
-#!Prueba_1: con nuevo código:
+#! Se crea la función crear_alcance1 para ingresar por el usuario los datos de las emisiones de alcance1
 def crear_alcance1(request):
     if request.method == "POST":
         form = forms.Alcance1Form(request.POST)
@@ -51,8 +37,22 @@ def crear_alcance1(request):
     
     context = {"form": form}
     return render(request, "home/crear_alcance1.html", context)
+    
+#! Se crea la función crear_alcance2 para ingresar por el usuario los datos de las emisiones de alcance2
+def crear_alcance2(request):
+    if request.method == "POST":
+        form = forms.Alcance2Form(request.POST)
+        if form.is_valid():
+            alcance2 = form.save()
+            calculo_emision_energiaelectrica(request, alcance2) 
+            return redirect('home:mostrar_resultados_energia') 
+    else:
+        form = forms.Alcance2Form()
+            
+    context = {"form": form}
+    return render(request, "home/crear_alcance2.html",context)
 
-#!  Prueba_1: Cálculo emisiones alcance1:
+#! Se crea la función para el Cálculo emisiones alcance1:
 def calculo_emision_refrigerante(request, alcance1):
     refrigerante = alcance1.refrigerante
     cantidad_refrigerante_kg = alcance1.cantidad_refrigerante_kg
@@ -64,13 +64,44 @@ def calculo_emision_refrigerante(request, alcance1):
         print(resultado_emision_gas_refrigerante)
         models.ResultadoEmisionGasRefrigerante.objects.create(valor=resultado_emision_gas_refrigerante).save()
 
-#!  Prueba:
+#!  Se crea la función mostrar_resultado para las emisiones del alcance1 por Refrigerante:
 def mostrar_resultados(request):
     factor_emision = models.ResultadoEmisionGasRefrigerante.objects.all()
     return render(request, 'home/calculo_emision_refrigerante.html', {'factor_emision': factor_emision})
 
-#********************************
 
+
+
+#! PRUEBA, 
+#! Se crea la función para el Cálculo emisiones alcance2:
+def calculo_emision_energiaelectrica(request, alcance2):
+    consumo_energia_electrica_kwh = alcance2.consumo_energia_electrica_kwh
+    año = alcance2.año
+    
+    factor = models.Factor_emision_consumo_energiaelectrica.objects.all().values("FACTOR_EMISION_ELECTRICIDAD").filter(AÑO_FACTOR_EMISION=año)
+    if factor:
+        factor_emision_electricidad = factor[0].get("FACTOR_EMISION_ELECTRICIDAD")
+        resultado_emision_energiaelectrica = float(consumo_energia_electrica_kwh) * factor_emision_electricidad
+        print(resultado_emision_energiaelectrica)
+        models.ResultadoEmisionConsumoEnergiaelectrica.objects.create(valor=resultado_emision_energiaelectrica).save()
+        
+def mostrar_resultados_energia(request):
+    factor_emision = models.ResultadoEmisionConsumoEnergiaelectrica.objects.all()
+    return render(request, 'home/calculo_emision_energiaelectrica.html', {'factor_emision': factor_emision})
+
+
+
+
+
+
+
+
+
+
+
+
+
+#********************************
 #! Creamos la función about
 def about(request):
     return render(request, 'home/about.html')    

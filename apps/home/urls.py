@@ -13,6 +13,8 @@ urlpatterns = [
     path('about/', views.about, name="about"),
     path('calculo-emision-refrigerante/', views.calculo_emision_refrigerante, name="calculo-emision-refrigerante"),
     path('mostrar-resultados/', views.mostrar_resultados, name='mostrar_resultados'),
+    path('calculo-emision-energiaelectrica/', views.calculo_emision_energiaelectrica, name="calculo-emision-energiaelectrica"), 
+    path('mostrar-resultados-energia/', views.mostrar_resultados_energia, name="mostrar_resultados_energia"),
     path('login/', views.login_request, name="login"),
     path("register/", views.register, name="register"),
     path("logout/", LogoutView.as_view(template_name="home/logout.html"), name="logout"),

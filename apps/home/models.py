@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 # Se crea un modelo para poder guardas datos en el formulario, datos a ingresar por el usuario:
-#! Se crear la clase Cliente para solicar los datos de la empresa al usuario. 
+#! Se crear la clase Cliente para solicitar los datos de la empresa al usuario. 
 class Cliente(models.Model):
     empresa = models.CharField(max_length=20)
     pais = models.CharField(max_length=20, default='')
@@ -22,10 +22,10 @@ class Alcance1(models.Model):
     def _str_(self):
         return self.refrigerante
 
-#! Se crea la clase Alcance2 para solitar al usuario los datos de emisiones directas por el consumo de electricidad
+#! Se crea la clase Alcance2 para solicitar al usuario los datos de emisiones directas por el consumo de electricidad
 class Alcance2(models.Model):
     consumo_energia_electrica_kwh = models.FloatField() #es el valor de consumo de kwh. Lo ingresa el usuario.
-    mes = models.CharField(max_length=20) #es el mes del consumo de energía. Lo ingresa el usuario.
+    año = models.FloatField() #es el mes del consumo de energía. Lo ingresa el usuario.
 
     def _str_(self):
         return str(self.consumo_energia_electrica_kwh)
@@ -49,7 +49,7 @@ class Factor_emision_consumo_energiaelectrica(models.Model):
 
     PAIS = models.CharField(max_length=20, default='')
     AÑO_FACTOR_EMISION = models.IntegerField(default=2020, null=True, blank=True)
-    FACTOR_EMISION_ELECTRICIDAD = models.FloatField() #ejemplo factor de emisión en colombia en el 2020 0.203
+    FACTOR_EMISION_ELECTRICIDAD = models.FloatField() #ejemplo factor de emisión en Colombia en el 2020 0.203
 
     class Meta:
         # db_table = ''

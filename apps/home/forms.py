@@ -20,16 +20,18 @@ class Alcance2Form(forms.ModelForm):
         model =models.Alcance2
         fields = "__all__"
 
-#Se crea un formulario para las constantes:
+#Se crea dos formulario para las constantes (factores de emisión):
 class Factor_emision_gas_refrigeranteForm(forms.ModelForm):
     class Meta:
         model = models.Factor_emision_gas_refrigerante
         fields = "__all__"
         # ['refrigerante']
 
-
-
-
+class Factor_emision_consumo_energiaelectricaForm(forms.ModelForm):
+    class Meta:
+        model = models.Factor_emision_consumo_energiaelectrica
+        fields = "__all__"
+        # ['energiaelectrica']
 
 #se crea registro:
 class CustomUserCreationForm(UserCreationForm):
